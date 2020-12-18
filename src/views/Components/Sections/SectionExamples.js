@@ -10,8 +10,8 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 
-import landing from "assets/img/landing.jpg";
-import profile from "assets/img/profile.jpg";
+import landing from "assets/img/bg.webp";
+import profile from "assets/img/bg.webp";
 
 import styles from "assets/jss/material-kit-react/views/componentsSections/exampleStyle.js";
 

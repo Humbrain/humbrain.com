@@ -16,6 +16,27 @@ const ApplicationsService = {
         "Content-Type": "application/json"
       }
     });
+  },
+  update(project, id) {
+    return axios.put(`${API_URL}/applications/${id}`, project, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  },
+  create(project) {
+    return axios.post(`${API_URL}/applications`, project, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  },
+  delete(id) {
+    return axios.delete(`${API_URL}/applications/${id}`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
   }
 };
 
