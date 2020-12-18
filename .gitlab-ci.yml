@@ -7,16 +7,32 @@ cache:
 before_script:
   - rm -rf build
   - CI=false npm install
-
+  - npm i -g yarn
+  - apt-get update -qq
+  - apt-get install -qq git
+  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 pages:
-  stage: deploy
+  stage: build
   script:
-    - CI=false npm run build
+    - CI=false yarn build
     - rm -rf public
-    - cp build/index.html build/404.html
+    - cp build/index.html
     - mv build public
   artifacts:
     paths:
       - public
+  only:
+    - master
+deploy_staging:
+  stage: deploy
+  environment:
+    name: staging
+    url: dev.humbrain.com
+  script:
+    - ssh root@dev.humbrain.com "cd var/www/humbrain && git checkout master && git pull origin master && exit"
   only:
     - master

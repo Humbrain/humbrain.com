@@ -17,7 +17,7 @@ ReactDOM.render(
     <Switch>
       <Route exact path="/" component={LandingPage} />
       <Route exact path="/projects" component={ProjectPages} />
-      <Route exact path="/projects/:id" component={ProductSectionSingle} />
+      <Route exact path="/projects/:id" component={ProjectPages} />
     </Switch>
   </Router>,
   document.getElementById("root")
