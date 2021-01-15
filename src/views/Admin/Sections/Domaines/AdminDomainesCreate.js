@@ -13,7 +13,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 
 const useStyles = makeStyles(modalStyle);
 
-const ProjectCreate = ({ modal, Transition, onCloseModal }) => {
+const DomainesCreate = ({ modal, Transition, onCloseModal }) => {
   const [error, setError] = useState("");
   const [isLoading, setIsloading] = useState(false);
   const classes = useStyles();
@@ -22,9 +22,9 @@ const ProjectCreate = ({ modal, Transition, onCloseModal }) => {
    *
    * @return {Promise<void>}
    */
-  const createProject = async () => {
+  const createDomaines = async () => {
     setIsloading(true);
-    const project = {
+    const domaines = {
       memo: values.memo.toUpperCase(),
       titre: values.titre,
       version: values.version,
@@ -34,7 +34,7 @@ const ProjectCreate = ({ modal, Transition, onCloseModal }) => {
       dcrea: `${new Date().getFullYear()}-${("0" + (new Date().getMonth() + 1)).slice(-2)}-${("0" + new Date().getDate()).slice(-2)}`,
       statut: (values.status ? 1 : 0)
     };
-    const [err, result] = await until(ApplicationsServices.create(project));
+    const [err, result] = await until(ApplicationsServices.create(domaines));
     if (err) {
       setIsloading(false);
       setError(err.message);
@@ -46,7 +46,7 @@ const ProjectCreate = ({ modal, Transition, onCloseModal }) => {
   /**
    *
    */
-  const { values, handleChange, handleSubmit } = useForm(createProject, {
+  const { values, handleChange, handleSubmit } = useForm(createDomaines, {
     titre: "",
     memo: "",
     description: "",
@@ -75,7 +75,7 @@ const ProjectCreate = ({ modal, Transition, onCloseModal }) => {
         <form onSubmit={handleSubmit}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
-              <h3>Création d'un nouveaux projet
+              <h3>Création d'un nouveaux domaine
                 {error && (<small><Danger>Erreur: {error}</Danger></small>)}
               </h3>
             </GridItem>
@@ -156,4 +156,4 @@ const ProjectCreate = ({ modal, Transition, onCloseModal }) => {
   );
 };
 
-export default ProjectCreate;
+export default DomainesCreate;
