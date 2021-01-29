@@ -14,7 +14,7 @@ import DomainesUpdate from "./AdminDomainesUpdate";
 import DomaineCreate from "./AdminDomainesCreate";
 import DomaineDelete from "./AdminDomainesDelete";
 import DomainesServices from "services/DomainesServices";
-import until from "../../../../utils/untils";
+import until from "utils/untils";
 import DomainShow from "./DomainesShow";
 
 const styles = {

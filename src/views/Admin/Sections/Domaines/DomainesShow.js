@@ -7,31 +7,38 @@ import style from "assets/jss/material-kit-react/views/landingPageSections/produ
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
 import DomainesUpdate from "./AdminDomainesUpdate";
-import DomainesServices from "../../../../services/DomainesServices";
+import DomainesServices from "services/DomainesServices";
+import { ButtonGroup } from "@material-ui/core";
+import Button from "components/CustomButtons/Button";
+import { Delete, Edit } from "@material-ui/icons";
+import { Transition } from "react-transition-group";
+import DomaineDelete from "./AdminDomainesDelete";
 
 const styles = {
   ...style
 };
 const useStyles = makeStyles(styles);
 export default function DomainShow({ appID }) {
-  const [isShow, setIsShow] = useState([]);
+  const [isOnEdit, setIsOnEdit] = useState([]);
   const [domain, setDomains] = useState([]);
+  const [modalDelete, setModalDelete] = useState({ "empty": true });
+
+
   /**
    *
    * @param id
    */
-  const openShow = (id) => {
-    if (isShow.includes(id)) {
-      if (isShow.length <= 1) {
-        setIsShow([]);
+  const openEdit = (id) => {
+    if (isOnEdit.includes(id)) {
+      if (isOnEdit.length === 1) {
+        setIsOnEdit([]);
       } else {
-        setIsShow(isOpen => isOpen.slice(isOpen.indexOf(id), 1));
+        setIsOnEdit(isOpen => isOpen.slice(isOpen.indexOf(id), 1));
       }
     } else {
-      setIsShow(isOpen => isOpen.concat(id));
+      setIsOnEdit(isOpen => isOpen.concat(id));
     }
   };
-
   useEffect(() => {
     DomainesServices.getOneByApp(appID).then(result => {
       setDomains(result.data);
@@ -51,15 +58,24 @@ export default function DomainShow({ appID }) {
                   <h4>{dom.protocole}{dom.memo}</h4>
                 </GridItem>
                 <GridItem xs={6} sm={6} md={6}>
+                  <ButtonGroup>
+                    <Button size={"sm"} color={"success"}
+                            onClick={() => openEdit(dom.id)}><Edit /> Edition</Button>
+                    <Button size={"sm"} color={"danger"}
+                            onClick={() => setModalDelete(dom)}><Delete /> Supprimer</Button>
+                  </ButtonGroup>
                 </GridItem>
               </GridContainer>
             </CardBody>
           </Card>
-          {isShow.includes(dom.id) && (
-            <DomainesUpdate domaines={dom} />
+          {isOnEdit.includes(dom.id) && (
+            <DomainesUpdate domaine={dom} />
           )}
         </GridItem>
       ))}
+      <DomaineDelete modal={modalDelete.empty} Transition={Transition}
+                     onCloseModal={() => setModalDelete({ "empty": true })}
+                     domaine={modalDelete} />
     </>
   );
 }

@@ -7,7 +7,7 @@ const ProtectRoute = ({ path, component }) => {
   if (window.localStorage.getItem("humbrain_admin") === md5("Myszkowski98").toString()) {
     return <Route exact path={path} component={component} />;
   } else {
-    window.location.href = "/";
+    window.location.href = "/login";
   }
 };
 

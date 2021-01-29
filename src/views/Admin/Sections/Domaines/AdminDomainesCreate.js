@@ -1,22 +1,30 @@
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
 import CustomInput from "components/CustomInput/CustomInput";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useForm from "hooks/useForm";
 import Button from "components/CustomButtons/Button";
-import { Checkbox, Dialog, DialogContent, FormControlLabel } from "@material-ui/core";
+import { Checkbox, Dialog, DialogContent, InputLabel, MenuItem, Select } from "@material-ui/core";
 import until from "utils/untils";
 import ApplicationsServices from "services/ApplicationsServices";
 import Danger from "components/Typography/Danger";
 import modalStyle from "assets/jss/material-kit-react/modalStyle.js";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import DomainesServices from "services/DomainesServices";
 
 const useStyles = makeStyles(modalStyle);
 
 const DomainesCreate = ({ modal, Transition, onCloseModal }) => {
   const [error, setError] = useState("");
   const [isLoading, setIsloading] = useState(false);
+  const [app, setApp] = useState([]);
   const classes = useStyles();
+
+  useEffect(() => {
+    ApplicationsServices.getAll().then(res => {
+      setApp(res.data);
+    });
+  }, []);
 
   /**
    *
@@ -25,16 +33,15 @@ const DomainesCreate = ({ modal, Transition, onCloseModal }) => {
   const createDomaines = async () => {
     setIsloading(true);
     const domaines = {
-      memo: values.memo.toUpperCase(),
-      titre: values.titre,
-      version: values.version,
-      description: values.description,
-      tags: values.tags,
-      MOA: values.MOA,
-      dcrea: `${new Date().getFullYear()}-${("0" + (new Date().getMonth() + 1)).slice(-2)}-${("0" + new Date().getDate()).slice(-2)}`,
-      statut: (values.status ? 1 : 0)
+      memo: values.memo,
+      titre: values.titre.toUpperCase(),
+      application: values.application,
+      bdsrv: values.bdsrv,
+      bdprod: values.bdprod,
+      protocole: values.protocole,
+      connexion: values.connexion
     };
-    const [err, result] = await until(ApplicationsServices.create(domaines));
+    const [err, result] = await until(DomainesServices.create(domaines));
     if (err) {
       setIsloading(false);
       setError(err.message);
@@ -47,13 +54,13 @@ const DomainesCreate = ({ modal, Transition, onCloseModal }) => {
    *
    */
   const { values, handleChange, handleSubmit } = useForm(createDomaines, {
-    titre: "",
+    application: "",
+    bdsrv: "",
+    protocole: "",
     memo: "",
-    description: "",
-    version: "",
-    tags: "",
-    MOA: "",
-    status: false
+    titre: "",
+    bdprod: "",
+    connexion: ""
   });
 
   return (
@@ -82,6 +89,56 @@ const DomainesCreate = ({ modal, Transition, onCloseModal }) => {
           </GridContainer>
           <GridContainer spacing={1}>
             <GridItem xs={12} sm={12} md={6}>
+              <InputLabel id="select-Application">Application</InputLabel>
+              <Select
+                labelId="select-Application"
+                id="select-app"
+                name={"application"}
+                value={values.application}
+                onChange={handleChange}
+              >
+                {app.map(app => (
+                  <MenuItem key={app.id} value={app.id}>{app.titre}</MenuItem>
+                ))}
+              </Select>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={6}>
+              <InputLabel id="select-bdsrv">BD Serve</InputLabel>
+              <Select
+                labelId="select-bdsrv"
+                id="select-bd"
+                name={"bdsrv"}
+                value={values.bdsrv}
+                onChange={handleChange}
+              >
+                <MenuItem value={"1"}>1</MenuItem>
+                <MenuItem value={"2"}>2</MenuItem>
+              </Select>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={6}>
+              <InputLabel id="select-protocole">Protocole</InputLabel>
+              <Select
+                labelId="select-protocole"
+                id="select-prot"
+                name={"protocole"}
+                value={values.protocole}
+                onChange={handleChange}
+              >
+                <MenuItem value={"http://"}>http</MenuItem>
+                <MenuItem value={"https://"}>https</MenuItem>
+              </Select>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={6}>
+              <CustomInput labelText="MOA" formControlProps={{
+                fullWidth: true
+              }}
+                           inputProps={{
+                             name: "memo",
+                             value: values.memo
+                             , onChange: handleChange
+                           }} />
+            </GridItem>
+            <GridItem xs={12} sm={12} md={6}>
               <CustomInput labelText="Titre" formControlProps={{
                 fullWidth: true
               }}
@@ -91,50 +148,21 @@ const DomainesCreate = ({ modal, Transition, onCloseModal }) => {
                            }} />
             </GridItem>
             <GridItem xs={12} sm={12} md={6}>
-              <CustomInput labelText="Memo" formControlProps={{
+              <CustomInput labelText="BD Prod" formControlProps={{
                 fullWidth: true
               }}
                            inputProps={{
-                             name: "memo",
-                             value: values.memo, onChange: handleChange
+                             name: "bdprod",
+                             value: values.bdprod, onChange: handleChange
                            }} />
             </GridItem>
             <GridItem xs={12} sm={12} md={6}>
-              <CustomInput labelText="Version" formControlProps={{
+              <CustomInput labelText="Connexion" formControlProps={{
                 fullWidth: true
               }}
                            inputProps={{
-                             name: "version",
-                             value: values.version, onChange: handleChange
-                           }} />
-            </GridItem>
-            <GridItem xs={12} sm={12} md={6}>
-              <CustomInput labelText="MOA" formControlProps={{
-                fullWidth: true
-              }}
-                           inputProps={{
-                             name: "MOA",
-                             value: values.MOA, onChange: handleChange
-                           }} />
-            </GridItem>
-            <GridItem xs={12} sm={12} md={6}>
-              <CustomInput labelText="tags (séparer par une virgules)" formControlProps={{
-                fullWidth: true
-              }}
-                           inputProps={{
-                             name: "tags",
-                             value: values.tags, onChange: handleChange
-                           }} />
-            </GridItem>
-            <GridItem xs={12} sm={12} md={6}>
-              <CustomInput labelText="Description" formControlProps={{
-                fullWidth: true
-              }}
-                           inputProps={{
-                             multiline: true,
-                             rows: 5,
-                             name: "description",
-                             value: values.description, onChange: handleChange
+                             name: "connexion",
+                             value: values.connexion, onChange: handleChange
                            }} />
             </GridItem>
           </GridContainer>
@@ -142,12 +170,6 @@ const DomainesCreate = ({ modal, Transition, onCloseModal }) => {
             <GridItem xs={10} sm={10} md={10}>
               <Button type={"submit"} color={"success"} name={"statut"}
                       disabled={isLoading}>{isLoading ? "Chargement..." : "Validé"}</Button>
-            </GridItem>
-            <GridItem xs={1} sm={1} md={1}>
-              <FormControlLabel
-                control={<Checkbox checked={values.status} name={"status"} color={"primary"}
-                                   onChange={handleChange} />}
-                label={"Activé"} />
             </GridItem>
           </GridContainer>
         </form>

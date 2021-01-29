@@ -5,21 +5,28 @@ import Footer from "components/Footer/Footer.js";
 
 import styles from "assets/jss/material-kit-react/views/landingPage.js";
 import ProjectAdmin from "./Sections/Product/AdminProject";
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
+import GridContainer from "components/Grid/GridContainer";
+import GridItem from "components/Grid/GridItem";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
-import Button from "../../components/CustomButtons/Button";
+import Button from "components/CustomButtons/Button";
 import DomainesAdmin from "./Sections/Domaines/AdminDomaines";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
 export default function Admin(props) {
-  const [productOpen, setProductOpen] = useState(false);
-  const [domainesOpen, setDomainesOpen] = useState(false);
+  const history = useHistory();
+  const [productOpen, setProductOpen] = useState(true);
+  const [domainesOpen, setDomainesOpen] = useState(true);
   const classes = useStyles();
   const { ...rest } = props;
+  const deco = () => {
+    window.localStorage.removeItem("humbrain_admin");
+    history.push("/login");
+  };
   return (
     <div>
+      <Button color={"danger"} onClick={() => deco()}>Déconnexion</Button>
       <div className={classNames(classes.main, classes.mainRaised)} style={{ marginTop: 25 + "px" }}>
         <div className={classes.container}>
           <GridContainer justify="center">

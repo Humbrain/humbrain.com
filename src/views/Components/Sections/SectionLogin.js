@@ -15,96 +15,46 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import Button from "components/CustomButtons/Button.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
-
+import md5 from "crypto-js/md5";
 import styles from "assets/jss/material-kit-react/views/componentsSections/loginStyle.js";
+import useForm from "hooks/useForm";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
 export default function SectionLogin() {
   const classes = useStyles();
+  const history = useHistory();
+  const login = () => {
+    console.log(values.password);
+    window.localStorage.setItem("humbrain_admin", md5(values.password).toString());
+    history.push("/admin");
+
+  };
+  const { values, handleChange, handleSubmit } = useForm(login, {
+    password: ""
+  });
   return (
     <div className={classes.section}>
       <div className={classes.container}>
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={4}>
             <Card>
-              <form className={classes.form}>
+              <form className={classes.form} onSubmit={handleSubmit}>
                 <CardHeader color="primary" className={classes.cardHeader}>
                   <h4>Login</h4>
-                  <div className={classes.socialLine}>
-                    <Button
-                      justIcon
-                      href="#pablo"
-                      target="_blank"
-                      color="transparent"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className={classes.socialIcons + " fab fa-twitter"} />
-                    </Button>
-                    <Button
-                      justIcon
-                      href="#pablo"
-                      target="_blank"
-                      color="transparent"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className={classes.socialIcons + " fab fa-facebook"} />
-                    </Button>
-                    <Button
-                      justIcon
-                      href="#pablo"
-                      target="_blank"
-                      color="transparent"
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i
-                        className={
-                          classes.socialIcons + " fab fa-google-plus-g"
-                        }
-                      />
-                    </Button>
-                  </div>
                 </CardHeader>
-                <p className={classes.divider}>Or Be Classical</p>
                 <CardBody>
                   <CustomInput
-                    labelText="First Name..."
-                    id="first"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      type: "text",
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <People className={classes.inputIconsColor} />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                  <CustomInput
-                    labelText="Email..."
-                    id="email"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      type: "email",
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Email className={classes.inputIconsColor} />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                  <CustomInput
                     labelText="Password"
-                    id="pass"
                     formControlProps={{
                       fullWidth: true
                     }}
                     inputProps={{
+                      name: "password",
                       type: "password",
+                      value: values.password,
+                      onChange: handleChange,
                       endAdornment: (
                         <InputAdornment position="end">
                           <Icon className={classes.inputIconsColor}>
@@ -117,8 +67,11 @@ export default function SectionLogin() {
                   />
                 </CardBody>
                 <CardFooter className={classes.cardFooter}>
-                  <Button simple color="primary" size="lg">
-                    Get started
+                  <Button type={"submit"} simple color="primary" size="lg">
+                    Connexion
+                  </Button>
+                  <Button onClick={() => history.push("/")} simple color="primary" size="lg">
+                    retourn au site
                   </Button>
                 </CardFooter>
               </form>

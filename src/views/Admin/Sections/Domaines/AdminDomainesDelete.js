@@ -5,6 +5,7 @@ import until from "utils/untils";
 import ApplicationsServices from "services/ApplicationsServices";
 import modalStyle from "assets/jss/material-kit-react/modalStyle.js";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import DomainesServices from "services/DomainesServices";
 
 const useStyles = makeStyles(modalStyle);
 
@@ -19,7 +20,7 @@ const DomaineDelete = ({ modal, Transition, onCloseModal, domaine }) => {
    */
   const deleteDomaine = async (id) => {
     setIsloading(true);
-    const [err, result] = await until(ApplicationsServices.delete(id));
+    const [err, result] = await until(DomainesServices.delete(id));
     if (err) {
       setIsloading(false);
       setError(err.message);
@@ -28,7 +29,6 @@ const DomaineDelete = ({ modal, Transition, onCloseModal, domaine }) => {
       window.location.reload();
     }
   };
-
   return (
     <Dialog
       classes={{
@@ -42,6 +42,8 @@ const DomaineDelete = ({ modal, Transition, onCloseModal, domaine }) => {
       aria-labelledby="modal-slide-title"
       aria-describedby="modal-slide-description"
     >
+      {console.log(domaine)}
+
       <DialogTitle>
         <h3>Voulez vous vraiment supprimez {domaine.memo}</h3>
       </DialogTitle>

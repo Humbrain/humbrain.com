@@ -12,8 +12,8 @@ import NavPills from "components/NavPills/NavPills";
 import CardBody from "components/Card/CardBody";
 import Card from "components/Card/Card";
 import Badge from "components/Badge/Badge";
-import Muted from "../../../components/Typography/Muted";
-import Button from "../../../components/CustomButtons/Button";
+import Muted from "components/Typography/Muted";
+import Button from "components/CustomButtons/Button";
 
 const useStyles = makeStyles(styles);
 

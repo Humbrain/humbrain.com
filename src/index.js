@@ -9,6 +9,7 @@ import "assets/scss/material-kit-react.scss?v=1.9.0";
 import LandingPage from "views/LandingPage/LandingPage.js";
 import ProjectPages from "views/ProjectPages/ProjectPages";
 import Admin from "views/Admin/Admin";
+import SectionLogin from "./views/Components/Sections/SectionLogin";
 
 let hist = createBrowserHistory();
 
@@ -18,6 +19,7 @@ ReactDOM.render(
       <Route exact path="/" component={LandingPage} />
       <Route exact path="/projects" component={ProjectPages} />
       <Route exact path="/projects/:id" component={ProjectPages} />
+      <Route exact path="/login" component={SectionLogin} />
       <ProtectRoute path={"/admin"} component={Admin} />
     </Switch>
   </Router>,
