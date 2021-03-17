@@ -129,7 +129,7 @@ const DomainesCreate = ({ modal, Transition, onCloseModal }) => {
               </Select>
             </GridItem>
             <GridItem xs={12} sm={12} md={6}>
-              <CustomInput labelText="MOA" formControlProps={{
+              <CustomInput labelText="Domaine" formControlProps={{
                 fullWidth: true
               }}
                            inputProps={{

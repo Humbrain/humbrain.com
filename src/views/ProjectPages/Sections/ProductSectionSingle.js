@@ -49,10 +49,11 @@ export default function ProductSectionSingle(props) {
                     <Card><CardBody style={{ textAlign: "left" }}><h4><b>Création:</b></h4>
                       <h5>{project.dcrea === undefined || project.dcrea === null ? "Inconnue" : project.dcrea.split("-").reverse().join("/")}</h5>
                     </CardBody></Card>
-                    <Card><CardBody style={{ textAlign: "left" }}><h4><b>Version:</b></h4><h5>{project.version}</h5>
+                    <Card><CardBody style={{ textAlign: "left" }}><h4><b>Version:</b></h4>
+                      <h5>{project.version || "v0.0.1"}</h5>
                     </CardBody></Card>
                     <Card><CardBody style={{ textAlign: "left" }}><h4><b>Maîtrise d'ouvrage:</b></h4>
-                      <h5>{project.MOA}</h5></CardBody></Card>
+                      <h5>{project.MOA || "Humbrain"}</h5></CardBody></Card>
                   </>
                 )
               }

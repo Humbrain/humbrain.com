@@ -71,7 +71,7 @@ const DomaineUpdate = ({ domaine }) => {
       </GridContainer>
       <GridContainer spacing={1}>
         <GridItem xs={12} sm={12} md={3}>
-          <InputLabel id="select-Application">Application</InputLabel>
+          <InputLabel id="select-Application">Nom d'Application</InputLabel>
           <Select
             labelId="select-Application"
             id="select-app"
@@ -85,20 +85,7 @@ const DomaineUpdate = ({ domaine }) => {
           </Select>
           {console.log(domaine)}
         </GridItem>
-        <GridItem xs={12} sm={12} md={3}>
-          <InputLabel id="select-bdsrv">BD Serve</InputLabel>
-          <Select
-            labelId="select-bdsrv"
-            id="select-bd"
-            name={"bdsrv"}
-            value={values.bdsrv}
-            onChange={handleChange}
-          >
-            <MenuItem value={"1"}>1</MenuItem>
-            <MenuItem value={"2"}>2</MenuItem>
-          </Select>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={3}>
+        <GridItem xs={12} sm={12} md={4}>
           <InputLabel id="select-protocole">Protocole</InputLabel>
           <Select
             labelId="select-protocole"
@@ -111,8 +98,8 @@ const DomaineUpdate = ({ domaine }) => {
             <MenuItem value={"https://"}>https</MenuItem>
           </Select>
         </GridItem>
-        <GridItem xs={12} sm={12} md={5}>
-          <CustomInput labelText="MOA" formControlProps={{
+        <GridItem xs={12} sm={12} md={4}>
+          <CustomInput labelText="Domaine" formControlProps={{
             fullWidth: true
           }}
                        inputProps={{
@@ -121,8 +108,8 @@ const DomaineUpdate = ({ domaine }) => {
                          , onChange: handleChange
                        }} />
         </GridItem>
-        <GridItem xs={12} sm={12} md={5}>
-          <CustomInput labelText="Titre" formControlProps={{
+        <GridItem xs={12} sm={12} md={4}>
+          <CustomInput labelText="Marque" formControlProps={{
             fullWidth: true
           }}
                        inputProps={{
@@ -130,8 +117,21 @@ const DomaineUpdate = ({ domaine }) => {
                          value: values.titre, onChange: handleChange
                        }} />
         </GridItem>
-        <GridItem xs={12} sm={12} md={12}>
-          <CustomInput labelText="BD Prod" formControlProps={{
+        <GridItem xs={12} sm={12} md={4}>
+          <InputLabel id="select-bdsrv">Numéro du serveur</InputLabel>
+          <Select
+            labelId="select-bdsrv"
+            id="select-bd"
+            name={"bdsrv"}
+            value={values.bdsrv}
+            onChange={handleChange}
+          >
+            <MenuItem value={"1"}>1</MenuItem>
+            <MenuItem value={"2"}>2</MenuItem>
+          </Select>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={4}>
+          <CustomInput labelText="Nom de la BDD" formControlProps={{
             fullWidth: true
           }}
                        inputProps={{
@@ -140,7 +140,7 @@ const DomaineUpdate = ({ domaine }) => {
                        }} />
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
-          <CustomInput labelText="Connexion" formControlProps={{
+          <CustomInput labelText="Chaine de connexion" formControlProps={{
             fullWidth: true
           }}
                        inputProps={{

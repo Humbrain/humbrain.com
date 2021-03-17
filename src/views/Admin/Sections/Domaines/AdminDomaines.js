@@ -16,6 +16,9 @@ import DomaineDelete from "./AdminDomainesDelete";
 import DomainesServices from "services/DomainesServices";
 import until from "utils/untils";
 import DomainShow from "./DomainesShow";
+import Header from "../../../../components/Header/Header";
+import HeaderAdmin from "../../../../components/Header/HeaderAdmin";
+import Parallax from "../../../../components/Parallax/Parallax";
 
 const styles = {
   ...style
@@ -24,7 +27,8 @@ const useStyles = makeStyles(styles);
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
-export default function DomainesAdmin() {
+export default function DomainesAdmin({ props }) {
+  const { ...rest } = props;
   const [allApplication, setAllApplication] = useState([]);
   const [isShow, setIsShow] = useState([]);
   const [modal, setModal] = useState(false);
@@ -58,46 +62,39 @@ export default function DomainesAdmin() {
 
   const classes = useStyles();
 
-  const domaineInApp = (id) => {
-    const [err, result] = until(DomainesServices.getCountByApp(id));
-    if (!err) {
-      console.log(result);
-    }
-  };
-
+  const dashboardRoutes = [];
   return (
-    <div className={classes.section}>
-      <GridContainer>
-        <small><Button onClick={() => setModal(true)}><PlusOneOutlined /> Ajouter un domaine</Button></small>
-        <GridItem xs={12} sm={12} md={12}>
-          <GridContainer>
-            {allApplication.map((app) => (
-              <GridItem xs={12} sm={12} md={12} key={app.id}>
-                <Card>
-                  <CardBody>
-                    <GridContainer>
-                      <GridItem xs={6} sm={6} md={6}>
-                        <h2>{app.memo.toUpperCase()}</h2>
-                      </GridItem>
-                      <GridItem xs={6} sm={6} md={6}>
-                        <Button size={"sm"} color={"success"}
-                                onClick={() => openShow(app.id)}><Visibility /> Afficher</Button>
-                      </GridItem>
-                    </GridContainer>
-                  </CardBody>
-                </Card>
-                {isShow.includes(app.id) && (
-                  <DomainShow appID={app.id} />
-                )}
-              </GridItem>
-            ))}
-          </GridContainer>
-        </GridItem>
-      </GridContainer>
-      <DomaineCreate modal={modal} Transition={Transition} onCloseModal={() => setModal(false)} />
-      {/*      <DomaineDelete modal={modalDelete.empty} Transition={Transition}
-                     onCloseModal={() => setModalDelete({ "empty": true })}
-                     domaines={modalDelete} />*/}
+    <div>
+      <div className={classes.section} id={"domain"}>
+        <GridContainer>
+          <small><Button onClick={() => setModal(true)}><PlusOneOutlined /> Ajouter un domaine</Button></small>
+          <GridItem xs={12} sm={12} md={12}>
+            <GridContainer>
+              {allApplication.map((app) => (
+                <GridItem xs={12} sm={12} md={12} key={app.id}>
+                  <Card>
+                    <CardBody>
+                      <GridContainer>
+                        <GridItem xs={6} sm={6} md={6}>
+                          <h2>{app.memo.toUpperCase()}</h2>
+                        </GridItem>
+                        <GridItem xs={6} sm={6} md={6}>
+                          <Button size={"sm"} color={"success"}
+                                  onClick={() => openShow(app.id)}><Visibility /> Afficher</Button>
+                        </GridItem>
+                      </GridContainer>
+                    </CardBody>
+                  </Card>
+                  {isShow.includes(app.id) && (
+                    <DomainShow appID={app.id} />
+                  )}
+                </GridItem>
+              ))}
+            </GridContainer>
+          </GridItem>
+        </GridContainer>
+        <DomaineCreate modal={modal} Transition={Transition} onCloseModal={() => setModal(false)} />
+      </div>
     </div>
   );
 }
